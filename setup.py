@@ -11,5 +11,5 @@ setup(
     license="BSD",
     author="dantezhu",
     author_email="zny2008@gmail.com",
-    description="word filter for gfw",
+    description="word filter for gfw. download keywords: https://github.com/observerss/textfilter",
     )
