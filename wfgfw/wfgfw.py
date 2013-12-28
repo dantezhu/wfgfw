@@ -20,8 +20,6 @@
 #=============================================================================
 """
 
-__version__ = '0.0.2'
-
 from collections import defaultdict
 import re
 import os
