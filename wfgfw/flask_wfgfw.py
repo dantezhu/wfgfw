@@ -27,6 +27,6 @@ class FlaskWFGFW(object):
             for filename in app.config.get('WFGFW_KEYWORD_FILES'):
                 self._filter.parse(filename)
 
-        @app.before_first_request
+        @app.before_request
         def inject_wfgfw():
             g.wfgfw = self._filter
