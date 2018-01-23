@@ -106,7 +106,7 @@ class DFAFilter():
     '''Filter Messages from keywords
 
     Use DFA to keep algorithm perform constantly
-    
+
     >>> f = DFAFilter()
     >>> f.add("sexy")
     >>> f.filter("hello sexy baby")
@@ -177,6 +177,53 @@ class DFAFilter():
 
         return dirty, ''.join(ret)
 
+    def filter_x(self,message,repl="*"):
+        """
+        支持返回被过滤的关键字列表
+        :param message:
+        :param repl:
+        :return:
+        """
+        if not isinstance(message,unicode):
+            message = message.decode('utf-8')
+        message = message.lower()
+        ret = []
+        start = 0
+        dirty = False
+        dirty_keys = []
+
+        while start < len(message):
+            level = self.keyword_chains
+            step_ins = 0
+            word = []
+
+            for char in message[start:]:
+                if char in level:
+                    step_ins += 1
+                    word.append(char)
+
+                    if self.delimit not in level[ char ]:
+                        level = level[ char ]
+                    else:
+                        dirty = True
+                        ret.append( repl*step_ins )
+                        start += step_ins - 1
+                        break
+                else:
+                    ret.append( message[start] )
+                    break
+            else:
+                # modify by dantezhu 2013-12-24 12:15
+                # 没有到链的结尾，正常循环完了
+                ret.append( message[start] )
+
+            start += 1
+
+            if word:
+                dirty_keys.append(''.join(word))
+
+        return dirty, ''.join(ret), dirty_keys
+
 
 if __name__ == "__main__":
     #gfw = NaiveFilter()
@@ -185,5 +232,12 @@ if __name__ == "__main__":
     gfw.parse("keywords")
     import time
     t= time.time()
-    print gfw.filter("一些脏字","*")
+    print gfw.filter_x("一些脏字","*")
+    print time.time() - t
+
+    t= time.time()
+    ret, new_str, keys = gfw.filter_x(u"这句话有一些脏字,有坏人,shit","*")
+    print ret, new_str
+    for k in keys:
+        print k
     print time.time() - t
