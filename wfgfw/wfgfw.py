@@ -46,7 +46,7 @@ class NaiveFilter():
             self.keywords.add(keyword.strip().decode('utf-8').lower())
 
     def filter(self,message,repl="*"):
-        message = unicode(message).lower()
+        message = str(message).lower()
         for kw in self.keywords:
             message = message.replace(kw,repl)
         return message
@@ -69,7 +69,7 @@ class BSFilter:
         self.pat_en = re.compile(r'^[0-9a-zA-Z]+$') # english phrase or not
    
     def add(self,keyword):
-        if not isinstance(keyword,unicode):
+        if not isinstance(keyword,str):
             keyword = keyword.decode('utf-8')
         keyword = keyword.lower()
         if keyword not in self.kwsets:
@@ -89,7 +89,7 @@ class BSFilter:
                 self.add(keyword.strip())
 
     def filter(self,message,repl="*"):
-        if not isinstance(message,unicode):
+        if not isinstance(message,str):
             message = message.decode('utf-8')
         message = message.lower()
         for word in message.split():
@@ -117,7 +117,7 @@ class DFAFilter():
         self.delimit = '\x00'
     
     def add(self,keyword):
-        if not isinstance(keyword,unicode):
+        if not isinstance(keyword,str):
             keyword = keyword.decode('utf-8')
         keyword = keyword.lower()
         chars = keyword.strip()
@@ -146,7 +146,7 @@ class DFAFilter():
                 self.add(keyword.strip())
 
     def filter(self,message,repl="*"):
-        if not isinstance(message,unicode):
+        if not isinstance(message,str):
             message = message.decode('utf-8')
         message = message.lower()
         ret = []
@@ -184,7 +184,7 @@ class DFAFilter():
         :param repl:
         :return:
         """
-        if not isinstance(message,unicode):
+        if not isinstance(message,str):
             message = message.decode('utf-8')
         message = message.lower()
         ret = []
@@ -232,12 +232,12 @@ if __name__ == "__main__":
     gfw.parse("keywords")
     import time
     t= time.time()
-    print gfw.filter_x("一些脏字","*")
-    print time.time() - t
+    print(gfw.filter_x("一些脏字","*"))
+    print(time.time() - t)
 
     t= time.time()
-    ret, new_str, keys = gfw.filter_x(u"这句话有一些脏字,有坏人,shit","*")
-    print ret, new_str
+    ret, new_str, keys = gfw.filter_x("这句话有一些脏字,有坏人,shit","*")
+    print(ret, new_str)
     for k in keys:
-        print k
-    print time.time() - t
+        print(k)
+    print(time.time() - t)

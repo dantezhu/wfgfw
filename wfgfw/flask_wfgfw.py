@@ -7,7 +7,7 @@
 """
 
 from flask import g
-from wfgfw import DFAFilter
+from .wfgfw import DFAFilter
 
 class FlaskWFGFW(object):
     """作为flask插件
