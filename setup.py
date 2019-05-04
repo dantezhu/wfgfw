@@ -1,9 +1,8 @@
 from setuptools import setup
-import wfgfw
 
 setup(
     name="wfgfw",
-    version=wfgfw.__version__,
+    version='0.1.1',
     zip_safe=False,
     platforms='any',
     packages=['wfgfw'],
