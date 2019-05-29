@@ -85,8 +85,11 @@ class BSFilter:
 
     def parse(self,path):
         with open(path,"r") as f:
-            for keyword in f:
-                self.add(keyword.strip())
+            for line in f:
+                keyword = line.strip()
+                if not keyword:
+                    continue
+                self.add(keyword)
 
     def filter(self,message,repl="*"):
         if not isinstance(message,str):
