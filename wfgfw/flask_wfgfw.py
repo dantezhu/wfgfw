@@ -9,7 +9,8 @@
 from flask import g
 from .wfgfw import DFAFilter
 
-class FlaskWFGFW(object):
+
+class FlaskWFGFW:
     """作为flask插件
     """
     _filter = None

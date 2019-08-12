@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding:utf-8 -*-
 
 """
 #=============================================================================
@@ -44,8 +43,8 @@ class NaiveFilter:
         self.keywords = set([])
 
     def parse(self, path):
-        for keyword in open(path):
-            self.keywords.add(keyword.strip().decode('utf-8').lower())
+        for keyword in open(path, 'r'):
+            self.keywords.add(keyword.strip().lower())
 
     def filter(self, message, repl="*"):
         message = str(message).lower()
@@ -73,7 +72,8 @@ class BSFilter:
 
     def add(self, keyword):
         if not isinstance(keyword, str):
-            keyword = keyword.decode('utf-8')
+            keyword = keyword.decode()
+
         keyword = keyword.lower()
         if keyword not in self.kwsets:
             self.keywords.append(keyword)
@@ -96,7 +96,8 @@ class BSFilter:
 
     def filter(self, message, repl="*"):
         if not isinstance(message, str):
-            message = message.decode('utf-8')
+            message = message.decode()
+
         message = message.lower()
         for word in message.split():
             if self.pat_en.search(word):
@@ -128,7 +129,8 @@ class DFAFilter:
 
     def add(self, keyword):
         if not isinstance(keyword, str):
-            keyword = keyword.decode('utf-8')
+            keyword = keyword.decode()
+
         keyword = keyword.lower()
         chars = keyword.strip()
         if not chars:
@@ -150,7 +152,7 @@ class DFAFilter:
             level[self.delimit] = 0
 
     def parse(self, path):
-        with open(path) as f:
+        with open(path, 'r') as f:
             for keyword in f:
                 self.add(keyword.strip())
 
