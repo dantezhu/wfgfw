@@ -114,6 +114,8 @@ class DFAFilter:
 
     Use DFA to keep algorithm perform constantly
 
+    解决了message变小写的问题
+
     >>> f = DFAFilter()
     >>> f.add("sexy")
     >>> f.filter("hello sexy baby")
@@ -154,15 +156,16 @@ class DFAFilter:
 
     def filter(self, message, repl="*"):
         if not isinstance(message, str):
-            message = message.decode('utf-8')
-        message = message.lower()
+            message = message.decode()
+
+        lower_message = message.lower()
         ret = []
         start = 0
         dirty = False
-        while start < len(message):
+        while start < len(lower_message):
             level = self.keyword_chains
             step_ins = 0
-            for char in message[start:]:
+            for char in lower_message[start:]:
                 if char in level:
                     step_ins += 1
                     if self.delimit not in level[char]:
@@ -173,16 +176,24 @@ class DFAFilter:
                         start += step_ins - 1
                         break
                 else:
-                    ret.append(message[start])
+                    ret.append(lower_message[start])
                     break
             else:
                 # modify by dantezhu 2013-12-24 12:15
                 # 没有到链的结尾，正常循环完了
-                ret.append(message[start])
+                ret.append(lower_message[start])
 
             start += 1
 
-        return dirty, ''.join(ret)
+        result_list = []
+        for index, value in enumerate(''.join(ret)):
+            if value != repl and index < len(message):
+                value = message[index]
+
+            # 说明是被替换的
+            result_list.append(value)
+
+        return dirty, ''.join(result_list)
 
     def filter_x(self, message, repl="*"):
         """
@@ -192,19 +203,21 @@ class DFAFilter:
         :return:
         """
         if not isinstance(message, str):
-            message = message.decode('utf-8')
-        message = message.lower()
+            message = message.decode()
+
+        lower_message = message.lower()
+
         ret = []
         start = 0
         dirty = False
         dirty_keys = []
 
-        while start < len(message):
+        while start < len(lower_message):
             level = self.keyword_chains
             step_ins = 0
             word = []
 
-            for char in message[start:]:
+            for char in lower_message[start:]:
                 if char in level:
                     step_ins += 1
                     word.append(char)
@@ -217,19 +230,27 @@ class DFAFilter:
                         start += step_ins - 1
                         break
                 else:
-                    ret.append(message[start])
+                    ret.append(lower_message[start])
                     break
             else:
                 # modify by dantezhu 2013-12-24 12:15
                 # 没有到链的结尾，正常循环完了
-                ret.append(message[start])
+                ret.append(lower_message[start])
 
             start += 1
 
             if word:
                 dirty_keys.append(''.join(word))
 
-        return dirty, ''.join(ret), dirty_keys
+        result_list = []
+        for index, value in enumerate(''.join(ret)):
+            if value != repl and index < len(message):
+                value = message[index]
+
+            # 说明是被替换的
+            result_list.append(value)
+
+        return dirty, ''.join(result_list), dirty_keys
 
 
 if __name__ == "__main__":
