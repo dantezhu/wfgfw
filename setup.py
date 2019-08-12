@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="wfgfw",
-    version='0.1.5',
+    version='0.1.7',
     zip_safe=False,
     platforms='any',
     packages=['wfgfw'],
