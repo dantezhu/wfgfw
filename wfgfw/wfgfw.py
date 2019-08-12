@@ -161,7 +161,7 @@ class DFAFilter:
             message = message.decode()
 
         lower_message = message.lower()
-        ret = []
+        result_list = []
         start = 0
         dirty = False
         while start < len(lower_message):
@@ -174,26 +174,18 @@ class DFAFilter:
                         level = level[char]
                     else:
                         dirty = True
-                        ret.append(repl * step_ins)
+                        result_list.append(repl * step_ins)
                         start += step_ins - 1
                         break
                 else:
-                    ret.append(lower_message[start])
+                    result_list.append(message[start])
                     break
             else:
                 # modify by dantezhu 2013-12-24 12:15
                 # 没有到链的结尾，正常循环完了
-                ret.append(lower_message[start])
+                result_list.append(message[start])
 
             start += 1
-
-        result_list = []
-        for index, value in enumerate(''.join(ret)):
-            if value != repl and index < len(message):
-                value = message[index]
-
-            # 说明是被替换的
-            result_list.append(value)
 
         return dirty, ''.join(result_list)
 
@@ -209,7 +201,7 @@ class DFAFilter:
 
         lower_message = message.lower()
 
-        ret = []
+        result_list = []
         start = 0
         dirty = False
         dirty_keys = []
@@ -228,29 +220,21 @@ class DFAFilter:
                         level = level[char]
                     else:
                         dirty = True
-                        ret.append(repl * step_ins)
+                        result_list.append(repl * step_ins)
                         start += step_ins - 1
                         break
                 else:
-                    ret.append(lower_message[start])
+                    result_list.append(message[start])
                     break
             else:
                 # modify by dantezhu 2013-12-24 12:15
                 # 没有到链的结尾，正常循环完了
-                ret.append(lower_message[start])
+                result_list.append(message[start])
 
             start += 1
 
             if word:
                 dirty_keys.append(''.join(word))
-
-        result_list = []
-        for index, value in enumerate(''.join(ret)):
-            if value != repl and index < len(message):
-                value = message[index]
-
-            # 说明是被替换的
-            result_list.append(value)
 
         return dirty, ''.join(result_list), dirty_keys
 
