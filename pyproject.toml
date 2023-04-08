@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wfgfw"
+version = "0.1.8"
+authors = [{name = "dantezhu", email = "zny2008@gmail.com"}]
+license = {text = "BSD"}
+description = "word filter for gfw, include plugin for flask. download keywords: https://github.com/observerss/textfilter"
+urls = {Homepage = "https://github.com/dantezhu/wfgfw"}
+
+[tool.setuptools]
+packages = ["wfgfw"]
+zip-safe = false
+platforms = ["any"]
+include-package-data = false
